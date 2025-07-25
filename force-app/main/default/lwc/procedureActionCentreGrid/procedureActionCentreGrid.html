@@ -1,0 +1,36 @@
+<template>
+    <c-custom-toast-cmp></c-custom-toast-cmp>
+    <lightning-card title="Центры, предоставляющие услугу">
+        <template if:true={hasCentres}>
+            <ul class="slds-list_dotted slds-p-horizontal_medium">
+                <template for:each={centresWithPrice} for:item="centre">
+                    <li key={centre.Id} class="slds-m-bottom_small">
+                        <strong>{centre.Name}</strong><br />
+                        📍 {centre.Address__c.city}, {centre.Address__c.street}<br />
+                        🕒 {centre.Working_Hours__c}<br />
+                        💰 Цена: {centre.price}₽<br />
+                        <lightning-button
+                            label="Make an Appointment"
+                            variant="brand"
+                            data-id={centre.Id}
+                            onclick={handleMakeAnAppointment}>
+                        </lightning-button>
+                    </li>
+                </template>
+            </ul>
+        </template>
+        <template if:false={hasCentres}>
+            <p class="slds-p-around_medium">Нет доступных центров для этой процедуры.</p>
+        </template>
+
+        <template if:true={selectedProduct}>
+            <c-order-modal
+                product={selectedProduct}
+                visible={showModal}
+                onclose={handleModalClose}
+                centre-id={selectedCentre}
+                price={selectedPrice}>
+            </c-order-modal>
+        </template>
+    </lightning-card>
+</template>

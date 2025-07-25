@@ -1,0 +1,58 @@
+<template>
+    <lightning-card title="Список">
+        <div class="slds-p-horizontal_medium slds-m-bottom_medium">
+            <lightning-combobox
+                name="viewType"
+                label="Что показать?"
+                value={viewType}
+                options={typeOptions}
+                onchange={handleTypeChange}>
+            </lightning-combobox>
+        </div>
+        
+        <c-custom-toast-cmp></c-custom-toast-cmp>
+
+        <!-- Центры -->
+        <template if:true={hasCentres}>
+            <ul class="slds-list_dotted slds-p-horizontal_medium">
+                <template for:each={centres} for:item="centre">
+                    <li key={centre.Id} class="slds-m-bottom_small">
+                        <a href={centre.url} target="_blank">
+                            <strong>{centre.Name}</strong>
+                        </a><br />
+                        📍 <strong>{centre.Address__c.country}, {centre.Address__c.city}, {centre.Address__c.street},</strong> {centre.Address__c.postalCode} <br />
+                        🕒 {centre.Working_Hours__c}
+                    </li>
+                </template>
+            </ul>
+        </template>
+
+        <!-- Процедуры -->
+        <template if:true={hasProcedures}>
+            <a href={pdfUrl} target="_blank">
+                <lightning-button label="Export PDF" variant="brand"></lightning-button>
+            </a>
+            <lightning-combobox name="currency"
+                                label="Валюта"
+                                value={selectedCurrency}
+                                options={currencyOptions}
+                                onchange={handleCurrencyChange}>
+            </lightning-combobox>
+            <ul class="slds-list_dotted slds-p-horizontal_medium">
+                <template for:each={procedures} for:item="procedure">
+                    <li key={procedure.Id} class="slds-m-bottom_small">
+                        <a href={procedure.url} target="_blank">
+                            <strong>{procedure.name}</strong> </a> — <strong>{procedure.convertedPrice} {selectedCurrency}</strong>
+                        </a><br />
+                    </li>
+                </template>
+            </ul>
+        </template>
+
+        <template if:true={error}>
+            <p class="slds-text-color_error slds-p-horizontal_medium">Ошибка загрузки данных</p>
+        </template>
+    </lightning-card>
+</template>
+
+

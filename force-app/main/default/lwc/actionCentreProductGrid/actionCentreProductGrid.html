@@ -1,0 +1,27 @@
+<template>
+    <c-custom-toast-cmp></c-custom-toast-cmp>
+    <template if:true={products.length}>
+        <div class="product-grid">
+            <template for:each={products} for:item="product">
+                <div class="product-card" key={product.Id}>
+                    <strong>{product.Product2.Name}</strong>
+                    <p>{product.Product2.ProductCode}</p>
+                    <p>{product.UnitPrice}₽</p>
+                    <lightning-button
+                        data-id={product.Id}
+                        label="Make an Appointment"
+                        variant="brand"
+                        onclick={handleMakeAppointment}>
+                    </lightning-button>
+                </div>
+            </template>
+        </div>
+        <template if:true={selectedProduct}>
+            <c-order-modal product={selectedProduct}
+                            visible={showModal}
+                            onclose={handleModalClose}
+                            centre-id={recordId}>
+            </c-order-modal>
+        </template>
+    </template>
+</template>

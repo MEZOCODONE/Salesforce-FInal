@@ -1,0 +1,14 @@
+<template>
+    <lightning-card title="Action Centres Map">
+        <template if:true={mapMarkers.length}>
+            <lightning-map
+                map-markers={mapMarkers}
+                zoom-level="10"
+                markers-title="Action Centres">
+            </lightning-map>
+        </template>
+        <template if:true={error}>
+            <p class="slds-text-color_error">Ошибка загрузки карты</p>
+        </template>
+    </lightning-card>
+</template>

@@ -1,0 +1,28 @@
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+    justify-content: flex-start;
+}
+
+.product-card {
+    flex: 0 1 calc(33.333% - 1rem); /* 3 карточки в ряд */
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background-color: white;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.1s ease-in-out;
+}
+
+.product-card:hover {
+    transform: translateY(-2px);
+}
+
+.product-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}

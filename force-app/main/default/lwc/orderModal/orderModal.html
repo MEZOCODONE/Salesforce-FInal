@@ -1,0 +1,89 @@
+<template>
+    <c-custom-toast-cmp></c-custom-toast-cmp>
+    <template if:true={visible}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-modal__title">📝 Запись на процедуру</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p><strong>Центр:</strong> {centreId}</p>
+                    <p><strong>Процедура:</strong> {product.Product2.Name}</p>
+                    <p><strong>Цена:</strong> {product.UnitPrice}₽</p>
+
+                    <lightning-combobox
+                        name="nurse"
+                        label="Выберите медсестру"
+                        value={selectedNurseId}
+                        options={nurseOptions}
+                        onchange={handleNurseChange}
+                        required>
+                    </lightning-combobox>
+                    <template if:true={selectedNurse}>
+                        <p style="margin-bottom:20px">Chosen Nurse: <strong>{selectedNurse.Name}</strong></p>
+                    </template>
+
+                    <template if:true={selectedNurse}>
+                        <lightning-input type="date"
+                                         label="Выберите дату"
+                                         value={selectedDate}
+                                         min={today}
+                                         onchange={handleDateChange}
+                                         required>
+                        </lightning-input>
+                    </template>
+                    <template if:true={availableHours.length}>
+                        <lightning-combobox name="time"
+                                            label="Выберите время"
+                                            value={selectedTime}
+                                            options={timeOptions}
+                                            onchange={handleTimeChange}
+                                            required>
+                        </lightning-combobox>
+                    <template if:true={selectedTime}>
+                        <lightning-input name="firstName"
+                                         label="First Name"
+                                         value={firstName}
+                                         onchange={handleInputChange}
+                                         required>
+                        </lightning-input>
+                        <lightning-input name="lastName"
+                                         label="Last Name"
+                                         value={lastName}
+                                         onchange={handleInputChange}
+                                         required>
+                        </lightning-input>
+                        <lightning-input name="phone"
+                                         type="tel"
+                                         label="Phone Number"
+                                         value={phone}
+                                         onchange={handleInputChange}
+                                         required>
+                        </lightning-input>
+                        <lightning-input name="email"
+                                         type="email"
+                                         label="Email"
+                                         value={email}
+                                         onchange={handleInputChange}
+                                         required>
+                        </lightning-input>
+                    </template>
+                </template>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" onclick={handleClose}></lightning-button>
+                    <template if:true={firstName}>
+                        <template if:true={lastName}>
+                            <template if:true={phone}>
+                                <template if:true={email}>
+                                    <lightning-button variant="brand" label="Confirm" onclick={handleConfirm}></lightning-button>
+                                </template>
+                            </template>
+                        </template>
+                    </template>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

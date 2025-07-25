@@ -1,0 +1,17 @@
+<template>
+    <template if:true={product}>
+        <lightning-card title={product.Name} icon-name="standard:product">
+            <div class="slds-p-horizontal_medium slds-p-vertical_small">
+                <p class="slds-text-title">📝 Description:</p>
+                <p>{product.Description}</p>
+
+                <p class="slds-text-title slds-m-top_medium">🔢 Product Code:</p>
+                <p>{product.ProductCode}</p>
+            </div>
+        </lightning-card>
+    </template>
+
+    <template if:false={product}>
+        <lightning-spinner alternative-text="Loading product..."></lightning-spinner>
+    </template>
+</template>

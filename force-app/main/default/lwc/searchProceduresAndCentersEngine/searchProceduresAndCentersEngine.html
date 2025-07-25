@@ -1,0 +1,29 @@
+<template>
+    <c-custom-toast-cmp></c-custom-toast-cmp>
+    <lightning-combobox
+        label="Тип поиска"
+        value={searchType}
+        options={typeOptions}
+        onchange={handleTypeChange}>
+    </lightning-combobox>
+
+    <lightning-input
+        label="Поиск"
+        value={searchTerm}
+        onchange={handleSearchChange}
+        placeholder="Введите запрос...">
+    </lightning-input>
+
+    <template if:true={suggestions.length}>
+        <ul class="sugg-list">
+            <template for:each={suggestions} for:item="item">
+                <li key={item.Id}
+                    class="sugg-item"
+                    data-id={item.Id}
+                    onclick={handleSuggestionSelect}>
+                    {item.Name}
+                </li>
+            </template>
+        </ul>
+    </template>
+</template>
