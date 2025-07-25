@@ -1,5 +1,6 @@
 <template>
     <c-custom-toast-cmp></c-custom-toast-cmp>
+    
     <template if:true={centre}>
         <lightning-card title={centre.Name} icon-name="standard:location">
             <div class="slds-p-horizontal_medium slds-p-vertical_small">
@@ -19,6 +20,16 @@
                 </template>
             </div>
         </lightning-card>
+
+        <template if:true={nurses.length}>
+            <lightning-card title="Nurses">
+                <div class="slds-p-horizontal_medium slds-p-vertical_small">
+                    <template for:each={nurses} for:item="nurse">
+                        <p key={nurse.Id}>👩‍⚕️ {nurse.Name}</p>
+                    </template>
+                </div>
+            </lightning-card>
+        </template>
     </template>
 
     <template if:false={centre}>

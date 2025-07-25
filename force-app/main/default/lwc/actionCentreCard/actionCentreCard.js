@@ -1,11 +1,13 @@
 import { LightningElement, wire, track } from 'lwc';
 import getCentreById from '@salesforce/apex/ActionCentreController.getCentreById';
+import getNursesByActionCentre from '@salesforce/apex/NurseController.getNursesByActionCentre';
 import { publish, MessageContext } from 'lightning/messageService';
 import TOAST_SERVICE_CHANNEL from '@salesforce/messageChannel/ToastService__c';
 
 export default class ActionCentreCard extends LightningElement {
     @track recordId;
     @track centre;
+    @track nurses = [];
 
     @wire(MessageContext)
     messageContext;
@@ -24,9 +26,20 @@ export default class ActionCentreCard extends LightningElement {
     wiredCentre({ data, error }) {
         if (data) {
             this.centre = data;
+            this.loadNurses();
         } else if (error) {
             this.showToast('Error loading centre', error?.body?.message || error.message, 'error');
         }
+    }
+
+    loadNurses() {
+        getNursesByActionCentre({ centreId: this.recordId })
+            .then(data => {
+                this.nurses = data || [];
+            })
+            .catch(error => {
+                this.showToast('Error loading nurses', error?.body?.message || error.message, 'error');
+            });
     }
 
     showToast(title, message, variant = 'error') {
