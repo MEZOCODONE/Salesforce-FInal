@@ -1,17 +1,17 @@
 <template>
     <c-custom-toast-cmp></c-custom-toast-cmp>
     <lightning-combobox
-        label="Тип поиска"
+        label="Search type"
         value={searchType}
         options={typeOptions}
         onchange={handleTypeChange}>
     </lightning-combobox>
 
     <lightning-input
-        label="Поиск"
+        label="Search"
         value={searchTerm}
         onchange={handleSearchChange}
-        placeholder="Введите запрос...">
+        placeholder="Enter your request...">
     </lightning-input>
 
     <template if:true={suggestions.length}>

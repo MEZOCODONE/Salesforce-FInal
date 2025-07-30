@@ -1,0 +1,51 @@
+.custom-modal {
+    max-height: unset !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 auto;
+}
+
+.custom-title {
+    color: rgb(35, 37, 100);
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.custom-content {
+    max-height: unset !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.custom-label {
+    color: #000;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.chosen-nurse {
+    color: rgb(35, 37, 100);
+    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.slds-modal__container {
+    margin: 0 auto;
+    top: 50%;
+    transform: translateY(-50%);
+    position: relative;
+}
+
+.slds-modal__header,
+.slds-modal__footer {
+    margin: 0 !important;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+lightning-input input {
+    background-color: transparent !important;
+}

@@ -6,7 +6,7 @@
   right: 25%;
   width: 25%;
   transform: translateX(-50%);
-  z-index: 100;
+  z-index: 99999;
   margin-right: 5px;
 }
 
@@ -67,7 +67,7 @@
     left: 50%;
     width: 98%;
     transform: translateX(-50%);
-    z-index: 100;
+    z-index: 99999;
     margin-right: 5px;
   }
 

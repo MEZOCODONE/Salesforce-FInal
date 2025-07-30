@@ -1,18 +1,13 @@
 public without sharing class ProcedureHelper {
 
     public static List<Product2> getAllProcedures() {
-        return [
-            SELECT Id, Name, Description
-            FROM Product2
-        ];
+        return [SELECT Id, Name, Description FROM Product2];
     }
 
     public static Map<Id, ProductInfo> getAllProceduresWithMinimalPrice() {
         List<PricebookEntry> entries = [
-            SELECT Product2Id, Product2.Name, Product2.Description, Product2.Id, UnitPrice
-            FROM PricebookEntry
-            WHERE IsActive = true AND Pricebook2.IsActive = true AND Product2Id != null
-        ];
+            SELECT Product2Id, Product2.Name, Product2.Description, Product2.Id, UnitPrice FROM PricebookEntry
+            WHERE IsActive = true AND Pricebook2.IsActive = true AND Product2Id != null];
 
         Map<Id, Decimal> minPriceByProductId = new Map<Id, Decimal>();
 
@@ -62,12 +57,7 @@ public without sharing class ProcedureHelper {
 
     @AuraEnabled(cacheable=true)
     public static Product2 getProductById(Id productId) {
-        return [
-            SELECT Id, Name, Description, ProductCode
-            FROM Product2
-            WHERE Id = :productId
-            LIMIT 1
-        ];
+        return [ SELECT Id, Name, Description, ProductCode FROM Product2 WHERE Id = :productId LIMIT 1];
     }
 
     public class ProductPriceWrapper {

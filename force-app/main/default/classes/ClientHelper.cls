@@ -1,32 +1,36 @@
 public without sharing class ClientHelper {
 
     public static Map<String, Id> insertClient(String firstName, String lastName, String email, String phone) {
-        Map<String, Id> newMap = new Map<String, Id>();
+        Map<String, Id> result = new Map<String, Id>();
 
-        List<Contact> existing = [
+        if (String.isBlank(firstName) || String.isBlank(lastName) || String.isBlank(email) || String.isBlank(phone)) {
+            throw new AuraHandledException('First name, last name, email and phone are required to insert client.');
+        }
+
+        List<Contact> existingContacts = [
             SELECT Id 
             FROM Contact 
             WHERE FirstName = :firstName 
               AND LastName = :lastName 
-              AND Email = :email 
+              AND Email = :email
             LIMIT 1
         ];
 
-        if (!existing.isEmpty()) {
-            newMap.put('Contact', existing.get(0).Id);
-            return newMap;
+        if (!existingContacts.isEmpty()) {
+            result.put('Contact', existingContacts[0].Id);
         } else {
-            Lead newClient = new Lead(
-                FirstName = firstName, 
-                LastName = lastName, 
-                Email = email, 
-                Phone = phone, 
-                Company = 'New Client', 
+            Lead newLead = new Lead(
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                Phone = phone,
+                Company = 'New Client',
                 Status = 'Open - Not Contacted'
             );
-            insert newClient;
-            newMap.put('Lead', newClient.Id);
-            return newMap;
+            insert newLead;
+            result.put('Lead', newLead.Id);
         }
+
+        return result;
     }
 }

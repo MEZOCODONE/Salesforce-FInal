@@ -1,14 +1,8 @@
 public without sharing class ScheduledVisitHelper {
 
     public static List<String> getVisitTimesByNurse(Id nurseId, Date targetDate) {
-        System.debug('📛 Запрос визитов для медсестры: ' + nurseId);
-        System.debug('📅 Целевая дата: ' + targetDate);
 
-        List<Scheduled_Visit__c> allVisits = [
-            SELECT Id, Appointment_Date__c
-            FROM Scheduled_Visit__c
-            WHERE Nurse__c = :nurseId
-        ];
+        List<Scheduled_Visit__c> allVisits = [ SELECT Id, Appointment_Date__c FROM Scheduled_Visit__c WHERE Nurse__c = :nurseId];
 
         List<String> resultTimes = new List<String>();
 
@@ -20,49 +14,30 @@ public without sharing class ScheduledVisitHelper {
                 String minute = String.valueOf(t.minute()).leftPad(2, '0');
                 String formattedTime = hour + ':' + minute;
 
-                System.debug('⏰ Визит в ' + formattedTime);
                 resultTimes.add(formattedTime);
             }
         }
 
-        System.debug('✅ Занятые часы: ' + resultTimes);
         return resultTimes;
     }
-
-    public static void insertScheduledVisit(
-        Id centreId,
-        Id nurseId,
-        Id Opportunity,
-        Datetime targetVisitDatetime,
-        Map<String, Id> leadOrContact
-    ) {
-        String key = leadOrContact.keySet().isEmpty() ? null : leadOrContact.keySet().iterator().next();
-
-        String name = 'Visit: ' + centreId + ' / ' + nurseId + ' @ ' + String.valueOf(targetVisitDatetime);
-        switch on key {
-            when 'Contact' {
-                insert new Scheduled_Visit__c(
-                    Name = name,
-                    Action_Centre__c = centreId,
-                    Nurse__c = nurseId,
-                    Client__c = leadOrContact.get('Contact'),
-                    Procedure_Opportunity__c = Opportunity,
-                    Appointment_Date__c = targetVisitDatetime
-                );
-            }   
-            when 'Lead' {
-                insert new Scheduled_Visit__c(
-                    Name = name,
-                    Action_Centre__c = centreId,
-                    Nurse__c = nurseId,
-                    Lead__c = leadOrContact.get('Lead'),
-                    Procedure_Opportunity__c = Opportunity,
-                    Appointment_Date__c = targetVisitDatetime
-                );
-            }   
-            when else {
-                throw new AuraHandledException('Unknown client type: nor a Lead or a Contact');
-            }
-        }
+    public static void insertScheduledVisit(ScheduledVisitWrapper v) {
+        if (v == null || v.centreId == null || v.nurseId == null || v.opportunityId == null || v.targetVisitDatetime == null || v.leadOrContact == null || v.leadOrContact.isEmpty())
+            throw new AuraHandledException('Missing required ScheduledVisit fields.');
+    
+        String key = v.leadOrContact.keySet().iterator().next();
+        Id clientId = v.leadOrContact.get(key);
+        if (clientId == null || (key != 'Lead' && key != 'Contact'))
+            throw new AuraHandledException('Invalid client type or missing ID.');
+    
+        insert new Scheduled_Visit__c(
+            Name = 'Visit: ' + v.centreId + ' / ' + v.nurseId + ' @ ' + String.valueOf(v.targetVisitDatetime),
+            Action_Centre__c = v.centreId,
+            Nurse__c = v.nurseId,
+            Procedure_Opportunity__c = v.opportunityId,
+            Appointment_Date__c = v.targetVisitDatetime,
+            Client__c = key == 'Contact' ? clientId : null,
+            Lead__c = key == 'Lead' ? clientId : null
+        );
     }
+
 }

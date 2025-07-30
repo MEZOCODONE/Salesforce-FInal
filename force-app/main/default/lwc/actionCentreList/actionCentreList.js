@@ -3,6 +3,8 @@ import getActionCentres from '@salesforce/apex/ActionCentreController.getActionC
 import getAllProceduresWithMinimalPrice from '@salesforce/apex/ProcedureController.getAllProceduresWithMinimalPrice';
 import { MessageContext, publish } from 'lightning/messageService';
 import TOAST_SERVICE_CHANNEL from '@salesforce/messageChannel/ToastService__c';
+import getCurrencyRates from '@salesforce/apex/CurrencyController.getCurrencyRates';
+
 
 export default class ActionCentreList extends LightningElement {
     @track viewType = 'centres';
@@ -54,7 +56,7 @@ export default class ActionCentreList extends LightningElement {
     }
 
     connectedCallback() {
-        this.fetchExchangeRates();
+        this.loadExchangeRates();
     }
 
     @wire(getActionCentres)
@@ -90,28 +92,21 @@ export default class ActionCentreList extends LightningElement {
             this.procedures = [];
         }
     }
-
-    async fetchExchangeRates() {
+    
+    async loadExchangeRates() {
         try {
-            const eurRes = await fetch('https://api.nbrb.by/exrates/rates/EUR?parammode=2');
-            const eur = await eurRes.json();
-            const eurRate = eur.Cur_OfficialRate / eur.Cur_Scale;
-
-            const usdRes = await fetch('https://api.nbrb.by/exrates/rates/USD?parammode=2');
-            const usd = await usdRes.json();
-            const usdRate = usd.Cur_OfficialRate / usd.Cur_Scale;
-
+            const result = await getCurrencyRates();
             this.exchangeRates = {
                 USD: 1,
-                EUR: usdRate / eurRate,
-                BYN: usdRate
+                EUR: result.EUR,
+                BYN: result.BYN
             };
-
             this.recalculatePrices();
         } catch (e) {
-            this.showToast('Failed to fetch currency rates', e.message);
+            this.showToast('Failed to load currency rates', e.body?.message || e.message);
         }
     }
+
 
     recalculatePrices() {
         try {
@@ -136,6 +131,12 @@ export default class ActionCentreList extends LightningElement {
     }
 
     get pdfUrl() {
-        return `https://empathetic-goat-cffz3l-dev-ed.trailblaze.lightning.force.com/apex/ProceduresToPdf?currency=${this.selectedCurrency}`;
+        return `/vforcesite/ProceduresToPdf?currency=${this.selectedCurrency}`;
     }
+
+    handleExportClick(event) {
+    console.log('Export PDF clicked');
+
+    window.open(this.pdfUrl, '_blank');
+}
 }

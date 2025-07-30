@@ -2,44 +2,45 @@
     <c-custom-toast-cmp></c-custom-toast-cmp>
     <template if:true={visible}>
         <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
-            <div class="slds-modal__container">
+            <div class="slds-modal__container custom-modal">
                 <header class="slds-modal__header">
-                    <h2 class="slds-modal__title">📝 Запись на процедуру</h2>
+                    <h2 class="slds-modal__title custom-title">Make An Appointment</h2>
                 </header>
-                <div class="slds-modal__content slds-p-around_medium">
-                    <p><strong>Центр:</strong> {centreId}</p>
-                    <p><strong>Процедура:</strong> {product.Product2.Name}</p>
-                    <p><strong>Цена:</strong> {product.UnitPrice}₽</p>
+                <div class="slds-modal__content slds-p-around_medium custom-content">
+                    <p class="custom-label"><strong>Procedure:</strong> {product.Product2.Name}</p>
+                    <p class="custom-label"><strong>Price:</strong> {product.UnitPrice}₽</p>
 
                     <lightning-combobox
                         name="nurse"
-                        label="Выберите медсестру"
+                        label="Choose a nurse"
                         value={selectedNurseId}
                         options={nurseOptions}
                         onchange={handleNurseChange}
                         required>
                     </lightning-combobox>
-                    <template if:true={selectedNurse}>
-                        <p style="margin-bottom:20px">Chosen Nurse: <strong>{selectedNurse.Name}</strong></p>
-                    </template>
 
                     <template if:true={selectedNurse}>
+                        <p class="chosen-nurse">👩‍⚕️ Chosen Nurse: <strong>{selectedNurse.Name}</strong></p>
+
                         <lightning-input type="date"
-                                         label="Выберите дату"
+                                         label="Chose an appointment date"
                                          value={selectedDate}
                                          min={today}
                                          onchange={handleDateChange}
                                          required>
                         </lightning-input>
                     </template>
+
                     <template if:true={availableHours.length}>
                         <lightning-combobox name="time"
-                                            label="Выберите время"
+                                            label="Chose an apointment time"
                                             value={selectedTime}
                                             options={timeOptions}
                                             onchange={handleTimeChange}
                                             required>
                         </lightning-combobox>
+                    </template>
+
                     <template if:true={selectedTime}>
                         <lightning-input name="firstName"
                                          label="First Name"
@@ -68,7 +69,6 @@
                                          required>
                         </lightning-input>
                     </template>
-                </template>
                 </div>
                 <footer class="slds-modal__footer">
                     <lightning-button label="Cancel" onclick={handleClose}></lightning-button>

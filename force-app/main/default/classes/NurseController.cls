@@ -2,9 +2,9 @@ public without sharing class NurseController {
 
     @AuraEnabled(cacheable = true)
     public static List<Account> getNursesByActionCentre(Id centreId) {
-        try {
+        try{
             return NurseHelper.getNursesByActionCentre(centreId);
-        } catch (Exception e) {
+        }catch(AuraHandledException e){
             throw new AuraHandledException(e.getMessage());
         }
     }

@@ -1,9 +1,11 @@
 public with sharing class ClientController {
 
-    public void insertClient(String firstName, String lastName, String email, String phone){
+    public static Map<String, Id> insertClient(String firstName, String lastName, String email, String phone){
         try{
-            ClientHelper.insertClient(firstName, lastName, email, phone);
+            return ClientHelper.insertClient(firstName, lastName, email, phone);
+        }catch(Exception e){
+            throw new AuraHandledException(e.getMessage());
         }
-        throw new AuraHandledException(e.getMessage());
+        
     }
 }

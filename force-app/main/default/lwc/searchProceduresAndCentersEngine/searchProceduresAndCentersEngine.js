@@ -4,10 +4,6 @@ import searchProcedures from '@salesforce/apex/ProcedureController.searchProcedu
 import { publish, MessageContext } from 'lightning/messageService';
 import TOAST_SERVICE_CHANNEL from '@salesforce/messageChannel/ToastService__c';
 
-/**
- * A search component for looking up medical centers or procedures.
- * Provides suggestions and redirects to the selected record's page.
- */
 export default class SearchProceduresAndCentersEngine extends LightningElement {
     @track searchTerm = '';
     @track suggestions = [];
@@ -35,7 +31,6 @@ export default class SearchProceduresAndCentersEngine extends LightningElement {
         this.searchType = event.detail.value;
         this.suggestions = [];
         this.searchTerm = '';
-        this.showToast('Search type changed', `New type: ${this.searchType}`, 'info');
     }
 
     handleSearchChange(event) {
@@ -53,7 +48,6 @@ export default class SearchProceduresAndCentersEngine extends LightningElement {
             searchCentres({ searchTerm: this.searchTerm })
                 .then(result => {
                     this.suggestions = result;
-                    this.showToast('Results loaded', `Found centres: ${result.length}`, 'success');
                 })
                 .catch(error => {
                     this.showToast('Error searching centres', error?.body?.message || error.message, 'error');
@@ -63,7 +57,6 @@ export default class SearchProceduresAndCentersEngine extends LightningElement {
             searchProcedures({ searchTerm: this.searchTerm })
                 .then(result => {
                     this.suggestions = result;
-                    this.showToast('Results loaded', `Found procedures: ${result.length}`, 'success');
                 })
                 .catch(error => {
                     this.showToast('Error searching procedures', error?.body?.message || error.message, 'error');

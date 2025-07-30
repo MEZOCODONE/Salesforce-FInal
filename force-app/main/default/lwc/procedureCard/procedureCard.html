@@ -1,17 +1,27 @@
 <template>
     <template if:true={product}>
-        <lightning-card title={product.Name} icon-name="standard:product">
-            <div class="slds-p-horizontal_medium slds-p-vertical_small">
-                <p class="slds-text-title">📝 Description:</p>
-                <p>{product.Description}</p>
+        <div class="product-card">
+            <h2 class="product-title">{product.Name}</h2>
 
-                <p class="slds-text-title slds-m-top_medium">🔢 Product Code:</p>
-                <p>{product.ProductCode}</p>
-            </div>
-        </lightning-card>
+            <p class="section-label">📝 Description:</p>
+            <p class="section-content">{product.Description}</p>
+
+            <p class="section-label">🔢 Product Code:</p>
+            <p class="section-content">{product.ProductCode}</p>
+
+            <template if:true={product.Price__c}>
+                <p class="section-label">💵 Price:</p>
+                <p class="section-content">{product.Price__c} USD</p>
+            </template>
+
+            <template if:true={product.Duration__c}>
+                <p class="section-label">⏱ Duration:</p>
+                <p class="section-content">{product.Duration__c} minutes</p>
+            </template>
+        </div>
     </template>
 
     <template if:false={product}>
-        <lightning-spinner alternative-text="Loading product..."></lightning-spinner>
+        <div class="loading-spinner">Loading product...</div>
     </template>
 </template>

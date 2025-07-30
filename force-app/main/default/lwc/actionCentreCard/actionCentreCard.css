@@ -1,5 +1,35 @@
-:host {
-    display: block;
-    max-width: 600px;
-    margin: auto;
+.centre-card {
+    padding: 20px;
+    background-color: #fff;
+    max-width: 700px;
+    margin-left: 0;
+}
+
+.centre-title {
+    font-size: 26px;
+    color: rgb(35, 37, 100);
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.section-label {
+    font-weight: 600;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    color: #333;
+}
+
+.section-content {
+    margin: 0;
+    color: #555;
+}
+
+.nurses-section {
+    margin-top: 30px;
+}
+
+.nurse-name {
+    margin: 4px 0;
+    color: #333;
 }

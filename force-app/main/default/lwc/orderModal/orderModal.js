@@ -129,17 +129,22 @@ export default class OrderModal extends LightningElement {
             return;
         }
 
-        insertEvent({
+        const payload = {
             centreId: this.centreId,
-            nurseId: this.selectedNurse.Id,
-            procedureId: this.product.Product2Id,
+            nurseId: this.selectedNurse?.Id,
+            procedureId: this.product?.Product2Id,
             dateStr: this.selectedDate,
             timeStr: this.selectedTime,
             firstName: this.firstName,
             lastName: this.lastName,
             email: this.email,
             phone: this.phone
-        })
+        };
+
+            console.log('--- Final Payload ---');
+            console.log(JSON.stringify(payload, null, 2));
+
+        insertEvent({ d: payload })
             .then(() => {
                 this.resetFormFields();
                 this.dispatchEvent(new CustomEvent('close'));
@@ -165,9 +170,10 @@ export default class OrderModal extends LightningElement {
             });
     }
 
+
     handleInputChange(event) {
         const { name, value } = event.target;
-        this[name] = value;
+        this[name] = value.trim();
     }
 
     resetFormFields() {

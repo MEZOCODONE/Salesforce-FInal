@@ -1,0 +1,34 @@
+.product-card {
+    padding: 20px;
+    background-color: #fff;
+    max-width: 600px;
+    margin-left: 0;
+}
+
+.product-title {
+    font-size: 24px;
+    color: rgb(35, 37, 100);
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.section-label {
+    font-weight: 600;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    color: #333;
+}
+
+.section-content {
+    margin: 0;
+    color: #555;
+}
+
+.loading-spinner {
+    text-align: left;
+    font-size: 18px;
+    padding: 40px;
+    color: #666;
+}

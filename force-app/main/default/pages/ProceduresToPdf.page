@@ -1,9 +1,9 @@
 <apex:page name="ProceduresToPdf" controller="ProcedurePdfController" renderAs="pdf">
-    <h1>Список процедур (Валюта: {!selectedCurrency})</h1>
+    <h1>List of Procedures (Currency: {!selectedCurrency})</h1>
     <table border="1" cellpadding="5" cellspacing="0">
         <tr>
-            <th>Название</th>
-            <th>Цена ({!selectedCurrency})</th>
+            <th>Name</th>
+            <th>Price ({!selectedCurrency})</th>
         </tr>
         <apex:repeat value="{!procedures}" var="p">
             <tr>

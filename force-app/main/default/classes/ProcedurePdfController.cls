@@ -11,7 +11,6 @@ public without sharing class ProcedurePdfController {
     }
 
     public String selectedCurrency { get; set; }
-
     public List<ProcedureWrapper> procedures { get; set; }
 
     public ProcedurePdfController() {
@@ -33,8 +32,10 @@ public without sharing class ProcedurePdfController {
 
     private Decimal getCurrencyRate(String currencyCode) {
         if (currencyCode == 'USD') return 1;
-        if (currencyCode == 'EUR') return 0.85;
-        if (currencyCode == 'BYN') return 3.3;
-        return 1;
+
+        CurrencyFromApi__mdt record = [
+            SELECT Exchange__c FROM CurrencyFromApi__mdt WHERE DeveloperName = :currencyCode LIMIT 1];
+
+        return record.Exchange__c;
     }
 }
