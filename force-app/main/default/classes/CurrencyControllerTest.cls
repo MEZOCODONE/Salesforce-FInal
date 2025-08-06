@@ -11,9 +11,9 @@ private class CurrencyControllerTest {
         Map<String, Decimal> result = CurrencyController.getCurrencyRates();
         Test.stopTest();
         
-        System.assertEquals(3, result.size());
-        System.assertEquals(1, result.get('USD'));
-        System.assertEquals(0.9, result.get('EUR'));
+        Assert.areEqual(3, result.size(), 'Should return 3 currency entries including USD');
+        Assert.areEqual(1, result.get('USD'), 'USD rate should be 1');
+        Assert.areEqual(0.9, result.get('EUR'), 'EUR rate should be 0.9');
     }
 
     @isTest
@@ -27,11 +27,13 @@ private class CurrencyControllerTest {
         Test.startTest();
         try {
             CurrencyController.getCurrencyRates();
-            System.assert(false, 'Expected exception was not thrown');
+            Assert.fail('Expected exception was not thrown');
         } catch (AuraHandledException e) {
-            System.assert(e.getMessage().contains('Script-thrown exception'), 'Exception should be by rates');
+            Assert.isTrue(
+                e.getMessage().contains('Script-thrown exception'),
+                'Exception message should indicate a script-thrown error due to invalid rates'
+            );
         }
         Test.stopTest();
     }
-
 }

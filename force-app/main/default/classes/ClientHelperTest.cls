@@ -9,18 +9,18 @@ private class ClientHelperTest {
         );
         Test.stopTest();
 
-        System.assertEquals(1, result.size(), 'Should return one result');
-        System.assert(result.containsKey('Lead'), 'Should return Lead key');
+        Assert.areEqual(1, result.size(), 'Should return one result');
+        Assert.isTrue(result.containsKey('Lead'), 'Should return Lead key');
+
         Id leadId = result.get('Lead');
-        System.assertNotEquals(null, leadId, 'Lead ID should not be null');
+        Assert.isNotNull(leadId, 'Lead ID should not be null');
 
         Lead inserted = [SELECT Id, FirstName, Email FROM Lead WHERE Id = :leadId];
-        System.assertEquals('Alice', inserted.FirstName);
+        Assert.areEqual('Alice', inserted.FirstName, 'Lead FirstName should match');
     }
 
     @isTest
     static void testInsertClient_UsesExistingContact() {
-        
         Contact existing = new Contact(
             FirstName = 'Bob',
             LastName = 'Johnson',
@@ -35,9 +35,9 @@ private class ClientHelperTest {
         );
         Test.stopTest();
 
-        System.assertEquals(1, result.size(), 'Should return one result');
-        System.assert(result.containsKey('Contact'), 'Should return Contact key');
-        System.assertEquals(existing.Id, result.get('Contact'), 'Returned ID should match existing contact');
+        Assert.areEqual(1, result.size(), 'Should return one result');
+        Assert.isTrue(result.containsKey('Contact'), 'Should return Contact key');
+        Assert.areEqual(existing.Id, result.get('Contact'), 'Returned ID should match existing contact');
     }
 
     @isTest
@@ -45,9 +45,9 @@ private class ClientHelperTest {
         Test.startTest();
         try {
             ClientHelper.insertClient(null, 'Test', 'test@example.com', '1234567890');
-            System.assert(false, 'Expected AuraHandledException for null firstName');
+            Assert.fail('Expected AuraHandledException for null firstName');
         } catch (AuraHandledException e) {
-            System.assertEquals('Script-thrown exception', e.getMessage());
+            Assert.areEqual('Script-thrown exception', e.getMessage(), 'Expected specific AuraHandledException message');
         }
         Test.stopTest();
     }

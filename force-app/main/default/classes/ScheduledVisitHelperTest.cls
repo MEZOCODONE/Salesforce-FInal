@@ -20,9 +20,9 @@ private class ScheduledVisitHelperTest {
         List<String> times = ScheduledVisitHelper.getVisitTimesByNurse(nurse.Id, Date.today());
         Test.stopTest();
 
-        System.assertEquals(2, times.size());
-        System.assert(times.contains('09:30'));
-        System.assert(times.contains('14:45'));
+        Assert.areEqual(2, times.size(), 'Should return only visits for today');
+        Assert.isTrue(times.contains('09:30'), 'Returned times should include 09:30');
+        Assert.isTrue(times.contains('14:45'), 'Returned times should include 14:45');
     }
 
     @isTest
@@ -51,7 +51,7 @@ private class ScheduledVisitHelperTest {
         Test.stopTest();
 
         List<Scheduled_Visit__c> visits = [SELECT Id FROM Scheduled_Visit__c WHERE Procedure_Opportunity__c = :opp.Id];
-        System.assertEquals(1, visits.size(), 'Scheduled visit should be inserted');
+        Assert.areEqual(1, visits.size(), 'Scheduled visit should be inserted for lead');
     }
 
     @isTest
@@ -80,7 +80,7 @@ private class ScheduledVisitHelperTest {
         Test.stopTest();
 
         List<Scheduled_Visit__c> visits = [SELECT Id FROM Scheduled_Visit__c WHERE Procedure_Opportunity__c = :opp.Id];
-        System.assertEquals(1, visits.size());
+        Assert.areEqual(1, visits.size(), 'Scheduled visit should be inserted for contact');
     }
 
     @isTest
@@ -89,9 +89,9 @@ private class ScheduledVisitHelperTest {
         Test.startTest();
         try {
             ScheduledVisitHelper.insertScheduledVisit(wrapper);
-            System.assert(false, 'Expected exception due to missing fields');
+            Assert.fail('Expected AuraHandledException due to missing fields');
         } catch (AuraHandledException e) {
-            System.assert(e.getMessage().contains('Script-thrown exception'));
+            Assert.isTrue(e.getMessage().contains('Script-thrown exception'), 'Exception message should indicate script error');
         }
         Test.stopTest();
     }
@@ -108,9 +108,9 @@ private class ScheduledVisitHelperTest {
         Test.startTest();
         try {
             ScheduledVisitHelper.insertScheduledVisit(wrapper);
-            System.assert(false, 'Expected exception due to invalid client type');
+            Assert.fail('Expected AuraHandledException due to unsupported client type');
         } catch (AuraHandledException e) {
-            System.assert(e.getMessage().contains('Script-thrown exception'));
+            Assert.isTrue(e.getMessage().contains('Script-thrown exception'), 'Exception message should indicate script error');
         }
         Test.stopTest();
     }

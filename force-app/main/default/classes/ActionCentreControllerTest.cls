@@ -46,41 +46,40 @@ private class ActionCentreControllerTest {
     @isTest
     static void testGetActionCentres_Success() {
         List<Action_Centre__c> centres = ActionCentreController.getActionCentres();
-        System.assertEquals(2, centres.size());
+        Assert.areEqual(2, centres.size(), 'Expected 2 centres');
     }
 
-@isTest
-static void testGetActionCentres_Exception() {
-    delete [SELECT Id FROM Action_Centre__c];
-    try {
-        ActionCentreController.getActionCentres();
-        System.assert(false, 'Expected AuraHandledException');
-    } catch (AuraHandledException e) {
-        System.assertEquals('System.AuraHandledException', e.getTypeName());
+    @isTest
+    static void testGetActionCentres_Exception() {
+        delete [SELECT Id FROM Action_Centre__c];
+        try {
+            ActionCentreController.getActionCentres();
+            Assert.fail('Expected AuraHandledException');
+        } catch (AuraHandledException e) {
+            Assert.areEqual('System.AuraHandledException', e.getTypeName(), 'Expected AuraHandledException type');
+        }
     }
-}
-
 
     @isTest
     static void testSearchCentres_Success() {
         List<Action_Centre__c> result = ActionCentreController.searchCentres('Alpha');
-        System.assertEquals(1, result.size());
+        Assert.areEqual(1, result.size(), 'Expected 1 centre matching "Alpha"');
     }
 
     @isTest
     static void testGetCentreProducts_Success() {
         Id centreId = [SELECT Id FROM Action_Centre__c LIMIT 1].Id;
         List<PricebookEntry> result = ActionCentreController.getCentreProducts(centreId);
-        System.assertEquals(1, result.size());
+        Assert.areEqual(1, result.size(), 'Expected 1 product entry for the centre');
     }
 
     @isTest
     static void testGetCentreProducts_Exception() {
         try {
             ActionCentreController.getCentreProducts(null);
-            System.assert(false, 'Expected AuraHandledException');
+            Assert.fail('Expected AuraHandledException');
         } catch (AuraHandledException e) {
-            System.assertNotEquals(null, e.getMessage());
+            Assert.isNotNull(e.getMessage(), 'Expected exception message');
         }
     }
 
@@ -88,16 +87,16 @@ static void testGetActionCentres_Exception() {
     static void testGetCentresByProduct_Success() {
         Id productId = [SELECT Id FROM Product2 WHERE Name = 'Test Product' LIMIT 1].Id;
         List<Action_Centre__c> result = ActionCentreController.getCentresByProduct(productId);
-        System.assertEquals(2, result.size());
+        Assert.areEqual(2, result.size(), 'Expected 2 centres for the product');
     }
 
     @isTest
     static void testGetCentresByProduct_Exception() {
         try {
             ActionCentreController.getCentresByProduct(null);
-            System.assert(false, 'Expected AuraHandledException');
+            Assert.fail('Expected AuraHandledException');
         } catch (AuraHandledException e) {
-            System.assertNotEquals(null, e.getMessage());
+            Assert.isNotNull(e.getMessage(), 'Expected exception message');
         }
     }
 
@@ -105,7 +104,7 @@ static void testGetActionCentres_Exception() {
     static void testGetCentreById_Success() {
         Id centreId = [SELECT Id FROM Action_Centre__c WHERE Name = 'Alpha Centre' LIMIT 1].Id;
         Action_Centre__c result = ActionCentreController.getCentreById(centreId);
-        System.assertEquals(centreId, result.Id);
+        Assert.areEqual(centreId, result.Id, 'Expected matching centre ID');
     }
 
     @isTest
@@ -121,9 +120,9 @@ static void testGetActionCentres_Exception() {
 
         try {
             ActionCentreController.getCentreById(centre.Id);
-            System.assert(false, 'Expected AuraHandledException');
+            Assert.fail('Expected AuraHandledException');
         } catch (AuraHandledException e) {
-            System.assertEquals('Script-thrown exception', e.getMessage());
+            Assert.areEqual('Script-thrown exception', e.getMessage(), 'Expected script-thrown exception message');
         }
     }
 }

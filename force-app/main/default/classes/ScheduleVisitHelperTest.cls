@@ -40,7 +40,7 @@ private class ScheduleVisitHelperTest {
         List<Scheduled_Visit__c> visits = [
             SELECT Id, Appointment_Date__c FROM Scheduled_Visit__c WHERE Nurse__c = :nurse.Id
         ];
-        System.assertEquals(1, visits.size(), 'Expected a scheduled visit to be created');
+        Assert.areEqual(1, visits.size(), 'Expected one scheduled visit to be created');
     }
 
     @isTest
@@ -49,9 +49,9 @@ private class ScheduleVisitHelperTest {
         Test.startTest();
         try {
             ScheduleVisitHelper.insertEvent(wrap);
-            System.assert(false, 'Exception was expected');
+            Assert.fail('Expected AuraHandledException due to missing fields');
         } catch (AuraHandledException e) {
-            System.assertEquals('Script-thrown exception', e.getMessage());
+            Assert.areEqual('Script-thrown exception', e.getMessage(), 'Exception message should match expected');
         }
         Test.stopTest();
     }
@@ -101,9 +101,9 @@ private class ScheduleVisitHelperTest {
         Test.startTest();
         try {
             ScheduleVisitHelper.insertEvent(wrap);
-            System.assert(false, 'Expected duplicate time exception');
+            Assert.fail('Expected AuraHandledException due to duplicate time slot');
         } catch (AuraHandledException e) {
-            System.assertEquals('Script-thrown exception', e.getMessage());
+            Assert.areEqual('Script-thrown exception', e.getMessage(), 'Exception should indicate time conflict');
         }
         Test.stopTest();
     }

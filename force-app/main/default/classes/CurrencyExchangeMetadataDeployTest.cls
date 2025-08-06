@@ -10,7 +10,7 @@ private class CurrencyExchangeMetadataDeployTest {
         job.execute(null);
         Test.stopTest();
 
-        System.assert(true, 'Execute completed without exception');
+        Assert.isTrue(true, 'Execute completed without exception');
     }
 
     @isTest
@@ -22,7 +22,7 @@ private class CurrencyExchangeMetadataDeployTest {
 
         job.handleResult(result, new Metadata.DeployCallbackContext());
 
-        System.assert(true, 'handleResult (success) completed');
+        Assert.isTrue(true, 'handleResult (success) completed without exception');
     }
 
     @isTest
@@ -34,7 +34,7 @@ private class CurrencyExchangeMetadataDeployTest {
 
         job.handleResult(result, new Metadata.DeployCallbackContext());
 
-        System.assert(true, 'handleResult (failure) completed');
+        Assert.isTrue(true, 'handleResult (failure) completed without exception');
     }
 
     @isTest
@@ -42,7 +42,7 @@ private class CurrencyExchangeMetadataDeployTest {
         Test.startTest();
         new CurrencyExchangeScheduler().execute(null);
         Test.stopTest();
-    
-        System.assert(true, 'Метод execute ran without exceptions');
+
+        Assert.isTrue(true, 'Scheduler executed and enqueued job without exception');
     }
 }

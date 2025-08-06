@@ -33,11 +33,11 @@ private class ConvertLeadToContactHandlerTest {
         ConvertLeadToContactHandler.handleBeforeUpdate(newList, oldList);
         Test.stopTest();
 
-        System.assertEquals(null, newList[0].Lead__c, 'Lead__c должен быть очищен');
-        System.assertNotEquals(null, newList[0].Client__c, 'Client__c должен быть заполнен');
+        Assert.isNull(newList[0].Lead__c, 'Lead__c должен быть очищен');
+        Assert.isNotNull(newList[0].Client__c, 'Client__c должен быть заполнен');
 
         Contact c = [SELECT Id, Email FROM Contact WHERE Id = :newList[0].Client__c LIMIT 1];
-        System.assertEquals('lead@example.com', c.Email);
+        Assert.areEqual('lead@example.com', c.Email, 'Email контакта должен совпадать с email лида');
     }
 
     @isTest
@@ -68,8 +68,8 @@ private class ConvertLeadToContactHandlerTest {
         ConvertLeadToContactHandler.handleBeforeUpdate(newList, oldList);
         Test.stopTest();
 
-        System.assertEquals(l.Id, newList[0].Lead__c, 'Lead__c должен остаться');
-        System.assertEquals(null, newList[0].Client__c, 'Client__c должен быть пуст');
+        Assert.areEqual(l.Id, newList[0].Lead__c, 'Lead__c должен остаться без изменений');
+        Assert.isNull(newList[0].Client__c, 'Client__c должен быть пуст');
     }
 
     @isTest
@@ -102,9 +102,9 @@ private class ConvertLeadToContactHandlerTest {
         ConvertLeadToContactHandler.handleBeforeUpdate(newList, oldList);
         Test.stopTest();
 
-        for (Scheduled_Visit__c v : newList) {
-            System.assertEquals(null, v.Lead__c);
-            System.assertNotEquals(null, v.Client__c);
+        for (Integer i = 0; i < newList.size(); i++) {
+            Assert.isNull(newList[i].Lead__c, 'Lead__c должен быть очищен для записи #' + i);
+            Assert.isNotNull(newList[i].Client__c, 'Client__c должен быть установлен для записи #' + i);
         }
     }
 }

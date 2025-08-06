@@ -32,9 +32,9 @@ private class OpportunityHelperTest {
         );
         Test.stopTest();
 
-        System.assertNotEquals(null, opp, 'Opportunity should be returned');
-        System.assertEquals('Test Opp', opp.Name);
-        System.assertEquals('Prospecting', opp.StageName);
+        Assert.isNotNull(opp, 'Opportunity should be returned');
+        Assert.areEqual('Test Opp', opp.Name, 'Opportunity name should match');
+        Assert.areEqual('Prospecting', opp.StageName, 'Opportunity stage should be Prospecting');
     }
 
     @isTest
@@ -42,12 +42,9 @@ private class OpportunityHelperTest {
         Test.startTest();
         try {
             OpportunityHelper.insertOpportunity(null, null, null, null);
-            System.assert(false, 'Should throw AuraHandledException for null input');
+            Assert.fail('Expected AuraHandledException for null input');
         } catch (AuraHandledException e) {
-            System.assertEquals(
-                'Script-thrown exception',
-                e.getMessage()
-            );
+            Assert.areEqual('Script-thrown exception', e.getMessage(), 'Expected exception message');
         }
         Test.stopTest();
     }
@@ -75,9 +72,12 @@ private class OpportunityHelperTest {
                 centre.Id,
                 Date.today().addDays(3)
             );
-            System.assert(false, 'Expected AuraHandledException due to missing PricebookEntry');
+            Assert.fail('Expected AuraHandledException due to missing PricebookEntry');
         } catch (AuraHandledException e) {
-            System.assert(e.getMessage().startsWith('Script-thrown exception'), 'Expected wrapped error message');
+            Assert.isTrue(
+                e.getMessage().startsWith('Script-thrown exception'),
+                'Expected exception message to start with "Script-thrown exception"'
+            );
         }
         Test.stopTest();
     }

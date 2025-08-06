@@ -19,8 +19,8 @@ private class NurseControllerTest {
         List<Account> nurses = NurseController.getNursesByActionCentre(centre.Id);
         Test.stopTest();
 
-        System.assertEquals(1, nurses.size(), 'Expected a nurse');
-        System.assertEquals(nurse.Id, nurses[0].Id);
+        Assert.areEqual(1, nurses.size(), 'Expected 1 nurse returned');
+        Assert.areEqual(nurse.Id, nurses[0].Id, 'Returned nurse should match inserted one');
     }
 
     @isTest
@@ -28,9 +28,9 @@ private class NurseControllerTest {
         Test.startTest();
         try {
             NurseController.getNursesByActionCentre(null);
-            System.assert(false, 'Expecred exception by null centreId');
+            Assert.fail('Expected AuraHandledException for null centreId');
         } catch (AuraHandledException e) {
-            System.assertEquals('Script-thrown exception', e.getMessage());
+            Assert.areEqual('Script-thrown exception', e.getMessage(), 'Expected specific exception message');
         }
         Test.stopTest();
     }

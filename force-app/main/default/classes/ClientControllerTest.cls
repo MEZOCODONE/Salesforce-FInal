@@ -7,21 +7,19 @@ private class ClientControllerTest {
         ClientController.insertClient('Jane', 'Doe', 'jane.doe@example.com', '123-456-7890');
         Test.stopTest();
 
-        // Проверим, что Lead действительно создался
         List<Lead> leads = [SELECT Id, FirstName, LastName, Email FROM Lead WHERE Email = 'jane.doe@example.com'];
-        System.assertEquals(1, leads.size(), 'Lead should be created');
-        System.assertEquals('Jane', leads[0].FirstName);
+        Assert.areEqual(1, leads.size(), 'Lead should be created');
+        Assert.areEqual('Jane', leads[0].FirstName, 'Lead FirstName should match');
     }
 
     @isTest
     static void testInsertClient_MissingFields_ThrowsAuraException() {
-
         Test.startTest();
         try {
             ClientController.insertClient(null, 'Doe', 'jane.doe@example.com', '123-456-7890');
-            System.assert(false, 'Expected AuraHandledException for missing firstName');
+            Assert.fail('Expected AuraHandledException for missing firstName');
         } catch (AuraHandledException e) {
-            System.assertEquals('System.AuraHandledException', e.getTypeName());
+            Assert.areEqual('System.AuraHandledException', e.getTypeName(), 'Expected AuraHandledException type');
         }
         Test.stopTest();
     }

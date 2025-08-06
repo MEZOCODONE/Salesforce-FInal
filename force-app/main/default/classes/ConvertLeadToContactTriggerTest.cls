@@ -26,12 +26,20 @@ private class ConvertLeadToContactTriggerTest {
         update visit;
         Test.stopTest();
 
-        Scheduled_Visit__c updated = [SELECT Id, Lead__c, Client__c FROM Scheduled_Visit__c WHERE Id = :visit.Id];
+        Scheduled_Visit__c updated = [
+            SELECT Id, Lead__c, Client__c 
+            FROM Scheduled_Visit__c 
+            WHERE Id = :visit.Id
+        ];
 
-        System.assertEquals(null, updated.Lead__c, 'Lead__c должен быть очищен триггером');
-        System.assertNotEquals(null, updated.Client__c, 'Client__c должен быть заполнен триггером');
+        Assert.isNull(updated.Lead__c, 'Lead__c must be cleaned by trigger');
+        Assert.isNotNull(updated.Client__c, 'Client__c must be filled by trigger');
 
-        Contact c = [SELECT Id, Email FROM Contact WHERE Id = :updated.Client__c];
-        System.assertEquals('trigger@example.com', c.Email);
+        Contact c = [
+            SELECT Id, Email 
+            FROM Contact 
+            WHERE Id = :updated.Client__c
+        ];
+        Assert.areEqual('trigger@example.com', c.Email, 'Email of contact should be equal to lead email');
     }
 }

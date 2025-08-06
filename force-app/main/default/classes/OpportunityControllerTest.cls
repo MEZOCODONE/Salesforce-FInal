@@ -7,7 +7,7 @@ private class OpportunityControllerTest {
         insert product;
 
         Id standardPBId = Test.getStandardPricebookId();
-        
+
         PricebookEntry pbe = new PricebookEntry(
             Product2Id = product.Id,
             Pricebook2Id = standardPBId,
@@ -32,8 +32,8 @@ private class OpportunityControllerTest {
         );
         Test.stopTest();
 
-        System.assertNotEquals(null, opp);
-        System.assertEquals('Controller Opp', opp.Name);
+        Assert.isNotNull(opp, 'Opportunity should be returned');
+        Assert.areEqual('Controller Opp', opp.Name, 'Opportunity name should match');
     }
 
     @isTest
@@ -41,10 +41,9 @@ private class OpportunityControllerTest {
         Test.startTest();
         try {
             OpportunityController.insertOpportunity(null, null, null, null);
-            System.assert(false, 'Expected exception by empty params');
+            Assert.fail('Expected AuraHandledException due to null parameters');
         } catch (AuraHandledException e) {
-            System.debug('Caught expected exception: ' + e.getMessage());
-            System.assertEquals('Script-thrown exception', e.getMessage());
+            Assert.areEqual('Script-thrown exception', e.getMessage(), 'Expected specific exception message');
         }
         Test.stopTest();
     }
@@ -72,10 +71,12 @@ private class OpportunityControllerTest {
                 centre.Id,
                 Date.today().addDays(1)
             );
-            System.assert(false, 'Should throw exception');
+            Assert.fail('Expected AuraHandledException due to missing PricebookEntry');
         } catch (AuraHandledException e) {
-            System.debug('Caught expected: ' + e.getMessage());
-            System.assert(e.getMessage().startsWith('Script-thrown exception'));
+            Assert.isTrue(
+                e.getMessage().startsWith('Script-thrown exception'),
+                'Exception message should indicate a script-thrown error'
+            );
         }
         Test.stopTest();
     }

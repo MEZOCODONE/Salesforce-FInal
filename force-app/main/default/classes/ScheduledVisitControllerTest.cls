@@ -17,8 +17,8 @@ private class ScheduledVisitControllerTest {
         List<String> times = ScheduledVisitController.getVisitTimesByNurse(nurse.Id, Date.today());
         Test.stopTest();
 
-        System.assertEquals(1, times.size());
-        System.assertEquals('10:15', times[0]);
+        Assert.areEqual(1, times.size(), 'Should return 1 scheduled visit time');
+        Assert.areEqual('10:15', times[0], 'Time should match inserted time');
     }
 
     @isTest
@@ -49,7 +49,7 @@ private class ScheduledVisitControllerTest {
         List<Scheduled_Visit__c> visits = [
             SELECT Id FROM Scheduled_Visit__c WHERE Procedure_Opportunity__c = :opp.Id
         ];
-        System.assertEquals(1, visits.size());
+        Assert.areEqual(1, visits.size(), 'Expected 1 scheduled visit to be created');
     }
 
     @isTest
@@ -59,14 +59,17 @@ private class ScheduledVisitControllerTest {
         Test.startTest();
         try {
             ScheduledVisitController.insertScheduledVisit(wrapper);
-            System.assert(false, 'Expected AuraHandledException');
+            Assert.fail('Expected AuraHandledException to be thrown');
         } catch (AuraHandledException e) {
-            System.assertEquals('Script-thrown exception', e.getMessage());
+            Assert.areEqual('Script-thrown exception', e.getMessage(), 'Expected specific exception message');
         }
         Test.stopTest();
     }
 
     private static Id getNurseRecordTypeId() {
-        return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Nurse').getRecordTypeId();
+        return Schema.SObjectType.Account
+            .getRecordTypeInfosByDeveloperName()
+            .get('Nurse')
+            .getRecordTypeId();
     }
 }
