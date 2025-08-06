@@ -1,12 +1,28 @@
 <template>
     <c-custom-toast-cmp></c-custom-toast-cmp>
+
     <template if:true={products.length}>
+        <div class="toolbar">
+            <lightning-combobox
+                label="Currency"
+                value={selectedCurrency}
+                options={currencyOptions}
+                onchange={handleCurrencyChange}>
+            </lightning-combobox>
+
+            <a onclick={handleExportClick}
+               class="slds-button slds-button_neutral"
+               target="_blank">
+               Export as PDF
+            </a>
+        </div>
+
         <div class="product-grid">
             <template for:each={products} for:item="product">
                 <div class="product-card" key={product.Id}>
                     <strong>{product.Product2.Name}</strong>
                     <p>{product.Product2.ProductCode}</p>
-                    <p>{product.UnitPrice} $</p>
+                    <p>{product.convertedPrice} {selectedCurrency}</p>
                     <lightning-button
                         data-id={product.Id}
                         label="Make an Appointment"
@@ -16,11 +32,12 @@
                 </div>
             </template>
         </div>
+
         <template if:true={selectedProduct}>
             <c-order-modal product={selectedProduct}
-                            visible={showModal}
-                            onclose={handleModalClose}
-                            centre-id={recordId}>
+                           visible={showModal}
+                           onclose={handleModalClose}
+                           centre-id={recordId}>
             </c-order-modal>
         </template>
     </template>
